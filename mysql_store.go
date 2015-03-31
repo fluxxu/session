@@ -13,7 +13,7 @@ import (
 // CREATE TABLE `session` (
 //   `id` VARCHAR(40) NOT NULL,
 //   `expires_at` DATETIME NOT NULL,
-//   `data` VARCHAR(45) NOT NULL,
+//   `data` text NOT NULL,
 //   PRIMARY KEY (`id`));
 type MySQLStore struct {
 	db        *sql.DB
