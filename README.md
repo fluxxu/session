@@ -1,2 +1,2 @@
 # session
-Go session middleware.
+Simple session for Go.
