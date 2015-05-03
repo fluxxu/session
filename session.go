@@ -1,7 +1,6 @@
 package session
 
 import (
-	_ "net/http"
 	"sync"
 	"time"
 )
