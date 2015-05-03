@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/mgo.v2"
 	"testing"
 	"time"
 )
@@ -89,8 +90,16 @@ func init() {
 		panic(err)
 	}
 
+	sess, err := mgo.Dial("mongo")
+	if err != nil {
+		panic(err)
+	}
+
+	c := sess.DB("test").C("sessions")
+
 	stores = map[string]Store{
 		"MemoryStore": NewMemoryStore(1),
 		"MySQLStore":  NewMySQLStore(db, 1),
+		"MongoStore":  NewMongoStore(c, 1),
 	}
 }
