@@ -71,6 +71,9 @@ func (s *MongoStore) Load(id string) (*Session, error) {
 	}{}
 	err := s.c.Find(bson.M{"id": id}).One(&doc)
 	if err != nil {
+		if err == mgo.ErrNotFound {
+			return nil, nil
+		}
 		return nil, fmt.Errorf("[session.MongoStore] get: %s", err)
 	}
 	sess := NewSession(id)
