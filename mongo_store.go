@@ -24,6 +24,17 @@ func NewMongoStore(c *mgo.Collection, maxAge int) *MongoStore {
 		closeChan: make(chan bool),
 	}
 
+	err := c.EnsureIndex(mgo.Index{
+		Key:        []string{"id"},
+		Unique:     true,
+		DropDups:   false,
+		Background: true,
+		Sparse:     true,
+	})
+	if err != nil {
+		log.Printf("[session.MongoStore] ensure index error: %s", err)
+	}
+
 	go func() {
 		//fmt.Println("gc enter")
 	loop:
