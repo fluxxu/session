@@ -28,7 +28,7 @@ func NewMongoStore(c *mgo.Collection, maxAge int) *MongoStore {
 		Key:        []string{"id"},
 		Unique:     true,
 		DropDups:   false,
-		Background: true,
+		Background: true, // See notes.
 		Sparse:     true,
 	})
 	if err != nil {
@@ -48,7 +48,9 @@ func NewMongoStore(c *mgo.Collection, maxAge int) *MongoStore {
 					},
 				}
 				if err := c.Remove(s); err != nil {
-					log.Printf("[session.MongoStore] clean up error: %s\n", err)
+					if err != mgo.ErrNotFound {
+						log.Printf("[session.MongoStore] clean up error: %s\n", err)
+					}
 				}
 				store.gcTimer.Reset(duration)
 			case <-store.closeChan:
